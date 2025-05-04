@@ -38,6 +38,7 @@ Take inputIni and merge its contents into mergedIni
 """
 def mergeIni(inputIni, mergedIni, filename):
     global sectionList
+    global allowedDupes
     overwritten = ""
     print("Merging " + filename)
     for section in sectionList:
@@ -58,7 +59,7 @@ def mergeIni(inputIni, mergedIni, filename):
                 # or in the case of a Paths or +Suppress key, this value
                 for index, existingPair in enumerate(mergedCurrentSection):
                     splitExistingVal = existingPair[1].split(';',1)
-                    if (mergeKey == "Paths" or mergeKey == "+Suppress"):
+                    if (mergeKey in allowedDupes):
                         if (existingPair[0] == mergeKey and splitExistingVal[0].strip() == mergeVal):
                             existingIndex = index
                             overwritten = splitExistingVal[1].strip()
@@ -82,12 +83,17 @@ def mergeIni(inputIni, mergedIni, filename):
 inputFolder = "mergeinis"
 outputFile = "Output.ini"
 
+sectionList = []
+combinedIni = {}
+allowedDupes = {}
+
 try:
     settings = parseIni("iniMerger.ini", False)
     for key, val in settings["[General]"]:
         match key:
             case "inputFolder": inputFolder = val
             case "outputFile": outputFile = val
+            case "allowedDupes": allowedDupes = val.split(',')
             case _: print("Unrecognized key: " + key)
 except:
     print("There was an error reading iniMerger.ini, using default values")
@@ -95,6 +101,7 @@ except:
 # show output and let user confirm it looks good
 print("Input Folder: " + inputFolder)
 print("Output File: " + outputFile)
+print("Allowed Dupe Keys: " + ", ".join(allowedDupes))
 input("Press Enter to continue, or close this window to cancel...")
 
 try:
@@ -105,8 +112,6 @@ try:
     inis = glob.glob(inputFolder + "/*.ini")
     inis.sort()
 
-    sectionList = []
-    combinedIni = {}
     for iniPath in inis:
         filenameOnly = iniPath.split('\\')[1]
         mergeIni(parseIni(iniPath), combinedIni, filenameOnly)
