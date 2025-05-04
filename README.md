@@ -9,6 +9,6 @@ For keys included in multiple ini files, the last file alphabetically wins. So i
 -`outputFile`: The name of the final merged ini that gets created
 -`allowedDupes`: Keys that can appear multiple times in the merged ini, instead of the last merged file winning
 
-### Attributions
+## Attributions
 
 [Merge icon created by iconixar - Flaticon](https://www.flaticon.com/free-icons/merge)
