@@ -1,4 +1,4 @@
-# iniMerger - A program for merging multiple ini files into one.
+# iniMerger - Merge Multiple INIs Into One
 
 Be default, the program looks for ini files located in "mergeinis", a folder in the same directory as the script. It will take all of these ini files, and merge them into a single file named "Engine.ini".
 
