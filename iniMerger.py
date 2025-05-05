@@ -26,6 +26,7 @@ def parseIni(iniPath, addToSectionList = True):
                 elif (not strippedLine.startswith('#') and not strippedLine.startswith(';') and '=' in strippedLine):
                     # this is (probably) a key/val pair
                     # split on the =, then try to split val on ; to strip inline comments
+                    # TODO: Better handling of inline comments - both ; and # - char in strippedLine a good way to check
                     splitKeyVal = strippedLine.split('=', 1)
                     key = splitKeyVal[0]
                     val = splitKeyVal[1].split(';', 1)[0].strip()
@@ -55,8 +56,7 @@ def mergeIni(inputIni, mergedIni, filename):
                 # run through each pair in the current input ini section
                 existingIndex = -1
 
-                # check if this mergedIni section already has this key,
-                # or in the case of a Paths or +Suppress key, this value
+                # check if this mergedIni section already has this key or is an allowed dupe
                 for index, existingPair in enumerate(mergedCurrentSection):
                     splitExistingVal = existingPair[1].split(';',1)
                     if (mergeKey in allowedDupes):
