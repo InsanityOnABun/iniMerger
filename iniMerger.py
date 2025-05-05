@@ -23,7 +23,7 @@ def parseIni(iniPath, addToSectionList = True):
                     currentSection = parsedIni[currentSectionLabel]
                     if (addToSectionList and currentSectionLabel not in sectionList):
                         sectionList.append(currentSectionLabel)
-                elif (not strippedLine.startswith('#') and not strippedLine.startswith(';')):
+                elif (not strippedLine.startswith('#') and not strippedLine.startswith(';') and '=' in strippedLine):
                     # this is (probably) a key/val pair
                     # split on the =, then try to split val on ; to strip inline comments
                     splitKeyVal = strippedLine.split('=', 1)
